@@ -44,6 +44,20 @@ RCT_EXPORT_MODULE(SplashScreen)
     [rootView addSubview:loadingView];
 }
 
++ (void)showSplash:(NSString*)splashScreen fromStoryBoard:(NSString*)storyboard inRootView:(UIView*)rootView {
+    if (!loadingView) {
+        UIStoryboard *sb = [UIStoryboard storyboardWithName:storyboard bundle:nil];
+        UIViewController *vc = [sb instantiateViewControllerWithIdentifier:splashScreen];
+        loadingView = vc.view;
+        CGRect frame = rootView.frame;
+        frame.origin = CGPointMake(0, 0);
+        loadingView.frame = frame;
+    }
+    waiting = false;
+    
+    [rootView addSubview:loadingView];
+}
+
 + (void)hide {
     if (waiting) {
         dispatch_async(dispatch_get_main_queue(), ^{
